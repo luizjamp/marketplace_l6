@@ -3,20 +3,23 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Sluggable\HasSlug;
-use Spatie\Sluggable\SlugOptions;
+use App\Traits\Slug;
+
+
+
 
 class Product extends Model
 {
-    use HasSlug;
+    use Slug;
     protected $fillable = ['name','description','body','price','slug'];
 
-    public function getSlugOptions() : SlugOptions
+    //accessors
+    public function getThumbAttribute()
     {
-        return SlugOptions::create()
-            ->generateSlugsFrom('name')
-            ->saveSlugsTo('slug');
+        return $this->photos->first()->image;
     }
+    //mutator
+
 
     public function store()
     {

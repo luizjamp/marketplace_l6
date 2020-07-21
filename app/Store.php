@@ -2,21 +2,15 @@
 
 namespace App;
 
+use App\Traits\Slug;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Sluggable\HasSlug;
-use Spatie\Sluggable\SlugOptions;
+use App\Notifications\StoreReceiveNewOrder;
 
 class Store extends Model
 {
-    use HasSlug;
-    protected $fillable = ['name','description','phone','mobile_phone','slug','logo'];
+    use Slug;
 
-    public function getSlugOptions() : SlugOptions
-    {
-        return SlugOptions::create()
-            ->generateSlugsFrom('name')
-            ->saveSlugsTo('slug');
-    }
+    protected $fillable = ['name','description','phone','mobile_phone','slug','logo'];
 
     public function user()
     {
@@ -30,6 +24,15 @@ class Store extends Model
 
     public function orders()
     {
-        return $this->hasMany(UserOrder::class);
+        return $this->belongsToMany(UserOrder::class, 'order_store','store_id','order_id');
+    }
+
+    public function notifyStoreOwners(array $toresId = [])
+    {
+        $stores = $this->whereIn('id',$toresId)->get();
+
+        return $stores->map(function($store){
+            return $store->user;
+        })->each->notify(new StoreReceiveNewOrder());
     }
 }

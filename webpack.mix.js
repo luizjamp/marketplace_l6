@@ -13,3 +13,6 @@ const mix = require('laravel-mix');
 
 mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css');
+
+mix.copy('resources/js/pgseguro_function.js','public/js')
+    .copy('resources/js/pgseguro_events.js','public/js');

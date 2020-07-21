@@ -48,7 +48,7 @@ class ProductController extends Controller
         //stores = \App\Store::all(['id','name']);
         $categories = \App\Category::all(['id','name']);
 
-        return view('admin.products.create', compact('stores','categories'));
+        return view('admin.products.create', compact('categories'));
 
     }
 
@@ -62,6 +62,8 @@ class ProductController extends Controller
     {
         $data = $request->all();
         $categories = $request->get('categories',null);
+
+        $data['price'] = formatPriceToDatabase($data['price']);
 
         //$store = \App\Store::find($data['store']);
         $store = auth()->user()->store;
@@ -126,6 +128,7 @@ class ProductController extends Controller
 
         if($request->hasFile('photos')){
             $images = $this->imageUpload($request->file('photos'), 'image');
+
             // inserir na base
             $product->photos()->createMany($images);
         }
