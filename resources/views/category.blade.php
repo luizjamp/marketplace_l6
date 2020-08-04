@@ -7,7 +7,28 @@
             <h2>{{$category->name}}</h2>
             <hr>
         </div>
-        @forelse($category->products as $key => $product)
+        @php
+            $children = app\Category::where('parent_id',$category->id)->get();
+        @endphp
+        @if($children->isNotEmpty())
+            @foreach($children as $key => $child)
+                <div class="col-md-4">
+                    <div class="card" style="width: 98%;">
+                        <div class="card-body">
+                            <h2 class="card-title">{{$child->name}}</h2>
+                            <p class="card-text">{{$child->description}}</p>
+                            <a href="{{route('category.single',['slug' => $child->slug])}}" class="btn btn-success">Ver Sub-Categoria</a>
+                        </div>
+                    </div>
+                </div>
+                @if(($key+1) % 3 == 0) </div><div class="row front"> @endif
+
+            @endforeach
+        @endif
+        <hr>
+    </div>
+    <div class="row front">
+        @foreach($products as $key => $product)
                 <div class="col-md-4">
                     <div class="card" style="width: 98%;">
                         @if($product->photos->count())
@@ -26,11 +47,8 @@
                     </div>
                 </div>
                 @if(($key+1) % 3 == 0) </div><div class="row front"> @endif
-        @empty
-            <div class="col-12">
-                <h3 class="alert alert-warning">Nenhum produto encontrado para esta categoria</h3>
-            </div>
-        @endforelse
+
+        @endforeach
     </div>
 @endsection
 

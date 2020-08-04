@@ -31,19 +31,18 @@
             <hr>
         </div>
         @foreach($stores as $store)
-        <div class="col-4">
-            @if($store->logo)
-                <img src="{{asset('storage/' . $store->logo)}}" alt="logo da Loja {{$store->name}}" class="img-fluid">
-            @else
-                <img src="https://via.placeholder.com/450x100.png?text=logo" alt="Loja sem logo..." class="img-fluid">
-            @endif
-            <p>
-                {{$store->description}}
-            </p>
+            <div class="col-4">
+                @if($store->logo)
+                    <img src="{{asset('storage/' . $store->logo)}}" alt="logo da Loja {{$store->name}}" class="img-fluid">
+                @else
+                    <img src="https://via.placeholder.com/450x100.png?text=logo" alt="Loja sem logo..." class="img-fluid">
+                @endif
+                <p>
+                    {{$store->description}}
+                </p>
                 <a href="{{route('store.single',['slug' => $store->slug])}}" class="btn btn-sm btn-success">Ver Loja</a>
-        </div>
+            </div>
         @endforeach
     </div>
 
 @endsection
-

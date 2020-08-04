@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Category;
 use App\Product;
 use Illuminate\Http\Request;
 
@@ -17,7 +18,9 @@ class HomeController extends Controller
     {
         $products = $this->product->limit(6)->orderby('id','DESC')->get();
         $stores =   \App\Store::limit(3)->orderby('id','DESC')->get();
+        //$categories = Category::whereNull('parent_id')->get();
 
+        //return view('welcome',compact('products','stores','categories'));
         return view('welcome',compact('products','stores'));
     }
 

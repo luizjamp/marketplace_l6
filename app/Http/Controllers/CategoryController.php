@@ -8,6 +8,7 @@ use App\Category;
 class CategoryController extends Controller
 {
     private $category;
+    private $products;
 
     public function __construct(Category $category)
     {
@@ -17,7 +18,9 @@ class CategoryController extends Controller
     public function index($slug)
     {
         $category = $this->category->whereSlug($slug)->first();
+        $products =  $category->allProduts();
 
-        return view('category',compact('category'));
+
+        return view('category',compact('category','products'));
     }
 }

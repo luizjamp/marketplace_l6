@@ -32,9 +32,11 @@
             </li>
 
             @foreach($categories as $category)
-                <li class="nav-item  @if(request()->is('category/' . $category->slug)) active @endif">
+
+                    <li class="nav-item  @if(request()->is('category/' . $category->slug)) active @endif">
                     <a class="nav-link" href="{{route('category.single', ['slug' => $category->slug])}}">{{$category->name}}</a>
                 </li>
+
             @endforeach
         </ul>
 
